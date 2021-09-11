@@ -20,14 +20,13 @@ def parse(query: str) -> Optional[ConversionData]:
     if to != "to" or len(old_currency) != 3 or len(new_currency) != 3:
         print("Invalid query.")
         exit(1)
-    amount, old_currency, to, new_currency = parts
     try:
         float_amount = float(amount)
     except ValueError:
         print("Invalid amount.")
         exit(1)
 
-    return float_amount, old_currency, new_currency
+    return float_amount, old_currency.upper(), new_currency.upper()
 
 
 def convert(data: ConversionData) -> float:
@@ -51,6 +50,12 @@ def convert(data: ConversionData) -> float:
     return conversion_rate * amount
 
 
+def loop() -> None:
+    while True:
+        data = parse(input())
+        converted = convert(data)
+        print(f"{converted:.2f} {data[2]}")
+
+
 if __name__ == '__main__':
-    data = parse("120 CZK to EUR")
-    converted = convert(data)
+    loop()
